@@ -1,0 +1,131 @@
+// Select or create Database
+use inventory_management
+
+// Create admin Collection
+db.admin.insertMany([
+  {
+    admin_name: "Main Admin"
+  }
+])
+
+
+// Create users Collection
+db.users.insertMany([
+  {
+    name: "Admin User",
+    email: "admin@company.com",
+    role: "ADMIN"
+  },
+  {
+    name: "Regular User",
+    email: "user@company.com",
+    role: "USER"
+  }
+])
+
+
+// Create categories Collection
+db.categories.insertMany([
+  { category_name: "Electronics" },
+  { category_name: "Office Supplies" }
+])
+
+
+// Create items Collection
+db.items.insertMany([
+  {
+    name: "Laptop",
+    price: 1500,
+    size: "LARGE",
+    category_name: "Electronics",
+    description: "Company laptop",
+    created_by: "Main Admin"
+  },
+  {
+    name: "Mouse",
+    price: 25,
+    size: "SMALL",
+    category_name: "Electronics",
+    description: "Wireless mouse",
+    created_by: "Main Admin"
+  },
+  {
+    name: "Notebook",
+    price: 5,
+    size: "MEDIUM",
+    category_name: "Office Supplies",
+    description: "Office notebook",
+    created_by: "Main Admin"
+  }
+])
+
+// Create orders Collection
+db.orders.insertOne({
+  user_email: "user@company.com",
+  status: "PENDING",
+  approved_by: null,
+  created_at: new Date()
+})
+
+
+// Create order_items Collection
+db.order_items.insertMany([
+  {
+    order_id: db.orders.findOne()._id,
+    item_name: "Laptop",
+    quantity: 1
+  },
+  {
+    order_id: db.orders.findOne()._id,
+    item_name: "Mouse",
+    quantity: 2
+  }
+])
+
+
+// View users
+db.users.find().pretty()
+
+
+// View items
+db.items.find().pretty()
+
+// View orders
+db.orders.find().pretty()
+
+// View order items
+db.order_items.find().pretty()
+
+// View categories
+db.categories.find().pretty()
+
+// View admin
+db.admin.find().pretty()
+
+// Using the JOIN-LIKE Query to combine order_items with orders
+
+db.order_items.aggregate([
+  {
+    $lookup: {
+      from: "orders",
+      localField: "order_id",
+      foreignField: "_id",
+      as: "order_details"
+    }
+  }
+])
+
+// Update an order's status from "PENDING" to "APPROVED" and set approved_by field
+db.orders.updateOne(
+  { status: "PENDING" },
+  {
+    $set: {
+      status: "APPROVED",
+      approved_by: "Main Admin"
+    }
+  }
+)
+
+// Delete an order with status "APPROVED" and its associated order_items
+db.orders.deleteOne({ status: "APPROVED" })
+db.order_items.deleteMany({})

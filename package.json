@@ -1,0 +1,25 @@
+{
+  "name": "inventory-management-system",
+  "version": "1.0.0",
+  "description": "Inventory Management System using MongoDB and Mongoose",
+  "main": "inventory_managementdb.js",
+  "scripts": {
+    "start": "node inventory_managementdb.js"
+  },
+  "author": "Philida ALT/SOE/025/3731",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mongoose": "^8.21.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Philida/Assignment_2.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Philida/Assignment_2/issues"
+  },
+  "homepage": "https://github.com/Philida/Assignment_2#readme"
+}
